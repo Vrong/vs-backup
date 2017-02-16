@@ -4,5 +4,5 @@
   "backupfile":"./backups/backup",
   "backuplist":"./backuplist.json",
   "timestamp":true,
-  "backup":true
+  "backup":false
 }

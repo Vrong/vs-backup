@@ -19,13 +19,14 @@ def backupSections(settings, sections):
 def backupSection(settings, name, section):
     """Prepare backup for one given section."""
     section_path = os.path.join(utils.tmpBackupDir(settings), 'sections', name)
+    section_file_path = os.path.join(section_path, 'files')
     file_num = 0
     # backup files
     print()
     print("Making backup for section", name)
     files = section['backup_files']
     for file in files:
-        file_backup_path = os.path.join(section_path, str(file_num))
+        file_backup_path = os.path.join(section_file_path, str(file_num))
         backupFile(settings, file, file_backup_path)
         file_num = file_num + 1
 
@@ -33,7 +34,7 @@ def backupSection(settings, name, section):
     files = section['backup_dirs']
     for file in files:
         print(file)
-        file_backup_path = os.path.join(section_path, str(file_num))
+        file_backup_path = os.path.join(section_file_path, str(file_num))
         print(file_backup_path)
         backupFile(settings, file, file_backup_path)
         file_num = file_num + 1
@@ -44,17 +45,32 @@ def backupSection(settings, name, section):
         for dir, subdirs, fnames in os.walk(file):
             # iterate content of all subdirs
             # save dirs
-            file_backup_path = os.path.join(section_path, str(file_num))
+            file_backup_path = os.path.join(section_file_path, str(file_num))
             backupFile(settings, dir, file_backup_path)
             file_num = file_num + 1
 
             for fname in fnames:
                 # save all subfiles
                 incfile = os.path.join(dir, fname)
-                file_backup_path = os.path.join(section_path, str(file_num))
+                file_backup_path = os.path.join(section_file_path,
+                                                str(file_num))
                 backupFile(settings, incfile, file_backup_path)
                 file_num = file_num + 1
+
+    # save groups, users,
+    backupMetaSection(settings, name, section, section_path)
     pass
+
+
+def backupMetaSection(settings, name, section, section_path):
+    """Backup datas as users, groups and packages."""
+    of = os.path.join(section_path, 'conf.json')
+    info = dict()
+    info['packages'] = section['packages']
+    info['groups'] = section['groups']
+    info['users'] = section['users']
+    with open(of, 'w') as outfile:
+        json.dump(info, outfile)
 
 
 def backupFile(settings, filename, backup_path):

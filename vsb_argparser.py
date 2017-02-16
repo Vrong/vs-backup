@@ -9,6 +9,7 @@ def parseArgs(settings):
 
     parser.add_argument('-b', '--backup', dest='backup', action='store_true',
                         help='start backup', default=False)
+
     parser.add_argument('-r', '--restore', action='store', dest='restorefile',
                         help='restore backup (ex: -r ./backup20170215.tar.gz)')
 
@@ -19,8 +20,9 @@ def parseArgs(settings):
                         default=None,
                         help='output file prefix (ex: ./backup)')
     parser.add_argument('-ts', '--timestamp', dest='timestamp',
-                        action='store_true', default=False,
-                        help='append timestamp to backup filename.')
+                        action='store',
+                        help='append timestamp to backup filename.\
+                        (ex: -ts on|off)')
     parser.add_argument('-tmp', '--tmp', dest='tmp_dir', action='store',
                         default=None,
                         help='temporary directory (ex: /tmp)')
@@ -37,8 +39,10 @@ def parseArgs(settings):
     if args.backupfile is not None:
         settings['backupfile'] = args.backupfile
 
-    if args.timestamp is True:
-        settings['timestamp'] = args.timestamp
+    if args.timestamp == 'on':
+        settings['timestamp'] = True
+    elif args.timestamp == 'off':
+        settings['timestamp'] = False
 
     if args.backuplist is not None:
         settings['backuplist'] = args.backuplist

@@ -5,6 +5,7 @@ import vsb_argparser
 import vsb_consts as consts
 import vsb_backup as backup
 import vsb_utils as utils
+import vsb_restore as restore
 
 
 if __name__ == '__main__':
@@ -24,3 +25,9 @@ if __name__ == '__main__':
         buname = backup.genBackupName(settings)
         print(buname)
         utils.compress(utils.tmpBackupDir(settings), buname)
+
+    if 'restorefile' in settings.keys():
+        utils.untargz(settings['restorefile'], utils.tmpRestoreDir(settings))
+        restore.restore(settings)
+
+    utils.permitTmp(settings, sections)

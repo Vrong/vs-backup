@@ -12,10 +12,10 @@
         "/etc/nginx/sites-enabled"
       ],
     "backup_dirs":[],
-    "groups":["vrong", "others"],
+    "groups":["vrong", "others", "unusergroup", "groups2"],
     "users":
     [
-      {"name":"vrong","group":"vrong","groups":"others"}
+      {"name":"unuser","group":"unusergroup","groups":["others", "groups2"]}
     ]
   }
 }
