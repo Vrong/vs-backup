@@ -1,0 +1,8 @@
+{
+  "package_installer":"apt install -y",
+  "tmp_dir":"/tmp",
+  "backupfile":"./backups/backup",
+  "backuplist":"./backuplist.json",
+  "timestamp":true,
+  "backup":true
+}

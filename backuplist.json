@@ -1,0 +1,21 @@
+{
+  "nginx":
+  {
+    "packages": ["nginx", "nginx-full"],
+    "backup_files":
+      [
+        "/etc/nginx/nginx.conf"
+      ],
+    "backup_dirs_inc":
+      [
+        "/etc/nginx/sites-available",
+        "/etc/nginx/sites-enabled"
+      ],
+    "backup_dirs":[],
+    "groups":["vrong", "others"],
+    "users":
+    [
+      {"name":"vrong","group":"vrong","groups":"others"}
+    ]
+  }
+}
