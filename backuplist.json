@@ -17,5 +17,12 @@
     [
       {"name":"unuser","group":"unusergroup","groups":["others", "groups2"]}
     ]
+  },
+
+
+
+  "emptysection":
+  {
+    "packages": ["nginx", "nginx-full"]
   }
 }

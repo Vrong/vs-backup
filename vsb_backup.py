@@ -20,6 +20,9 @@ def backupSection(settings, name, section):
     """Prepare backup for one given section."""
     section_path = os.path.join(utils.tmpBackupDir(settings), 'sections', name)
     section_file_path = os.path.join(section_path, 'files')
+    # create the paths for later use and restore
+    if not os.path.exists(section_file_path):
+        os.makedirs(section_file_path)
     file_num = 0
     print()
     print("Making backup for section", name)
@@ -71,9 +74,12 @@ def backupMetaSection(settings, name, section, section_path):
     """Backup datas as users, groups and packages."""
     of = os.path.join(section_path, 'conf.json')
     info = dict()
-    info['packages'] = section['packages']
-    info['groups'] = section['groups']
-    info['users'] = section['users']
+    if 'packages' in section:
+        info['packages'] = section['packages']
+    if 'groups' in section:
+        info['groups'] = section['groups']
+    if 'users' in section:
+        info['users'] = section['users']
     with open(of, 'w') as outfile:
         json.dump(info, outfile)
 

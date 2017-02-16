@@ -55,33 +55,35 @@ def restoreMetaSection(settings, name, path):
             print('Error while installing packages')
 
     # groups
-    for group in conf['groups']:
-        try:
-            cmd = 'groupadd ' + group
-            print('Adding groups:', cmd)
-            subprocess.call(cmd.split())
-        except (KeyError, PermissionError):
-            print('Error adding group:', group)
+    if 'groups' in conf:
+        for group in conf['groups']:
+            try:
+                cmd = 'groupadd ' + group
+                print('Adding groups:', cmd)
+                subprocess.call(cmd.split())
+            except (KeyError, PermissionError):
+                print('Error adding group:', group)
 
     # users
-    for user in conf['users']:
-        try:
-            name = user['name']
-            group = user['group'] if 'group' in user else None
-            groups = user['groups'] if 'groups' in user else []
-            if group is None:
-                cmd = 'useradd ' + name
-            else:
-                cmd = 'useradd -G ' + group + ' ' + name
-            print('Adding user:', cmd)
-            subprocess.call(cmd.split())
-
-            for gr in groups:
-                cmd = 'usermod -g ' + gr + ' ' + name
-                print('Addings groups to user:', cmd)
+    if 'users' in conf:
+        for user in conf['users']:
+            try:
+                name = user['name']
+                group = user['group'] if 'group' in user else None
+                groups = user['groups'] if 'groups' in user else []
+                if group is None:
+                    cmd = 'useradd ' + name
+                else:
+                    cmd = 'useradd -G ' + group + ' ' + name
+                print('Adding user:', cmd)
                 subprocess.call(cmd.split())
-        except (KeyError, PermissionError):
-            print('Error while adding user', user)
+
+                for gr in groups:
+                    cmd = 'usermod -g ' + gr + ' ' + name
+                    print('Addings groups to user:', cmd)
+                    subprocess.call(cmd.split())
+            except (KeyError, PermissionError):
+                print('Error while adding user', user)
 
 
 def restore(settings):
