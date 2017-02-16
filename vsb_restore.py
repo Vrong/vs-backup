@@ -11,14 +11,12 @@ def restoreFile(settings, file_dir):
     """Restore file as in info file."""
     info = utils.loadJsonFile(os.path.join(file_dir, 'info.json'))
     try:
-        o_s = oct(int(info['permissions']))
         if os.path.isfile(info['filename']):
             os.remove(info['filename'])
         if not os.path.isdir(info['filename']):
             utils.copy(os.path.join(file_dir, 'file'), info['filename'])
 
-        os.chmod(info['filename'], int(o_s[-len(o_s)+o_s.index('o')+1:]))
-        # TODO le -4 est pas bon
+        os.chmod(info['filename'], int(info['permissions'], 8))
         # restore owner and group
         uid = pwd.getpwnam(info['owner']).pw_uid
         gid = grp.getgrnam(info['group']).gr_gid
@@ -31,6 +29,9 @@ def restoreFile(settings, file_dir):
 
 def restoreSection(settings, name, path):
     """Restore a given section."""
+    # restore users,groups,packages
+    restoreMetaSection(settings, name, path)
+
     # restore files
     print('Restoring section', name)
     files_path = os.path.join(path, 'files')
@@ -38,22 +39,20 @@ def restoreSection(settings, name, path):
     for num in file_nums:
         restoreFile(settings, os.path.join(files_path, num))
 
-    # restore users,groups,packages
-    restoreMetaSection(settings, name, path)
-
 
 def restoreMetaSection(settings, name, path):
     """Restore groups, users, packages."""
     conf = utils.loadJsonFile(os.path.join(path, 'conf.json'))
     # packages
-    try:
-        cmd = settings['package_installer']
-        for pkg in conf['packages']:
-            cmd = cmd + ' ' + pkg
-        print('Installing packages:', cmd)
-        subprocess.call(cmd.split())
-    except (KeyError, PermissionError):
-        print('Error')
+    if 'packages' in conf:
+        try:
+            cmd = settings['package_installer']
+            for pkg in conf['packages']:
+                cmd = cmd + ' ' + pkg
+            print('Installing packages:', cmd)
+            subprocess.call(cmd.split())
+        except (KeyError, PermissionError):
+            print('Error while installing packages')
 
     # groups
     for group in conf['groups']:
@@ -68,9 +67,12 @@ def restoreMetaSection(settings, name, path):
     for user in conf['users']:
         try:
             name = user['name']
-            group = user['group']
-            groups = user['groups']
-            cmd = 'useradd -G ' + group + ' ' + name
+            group = user['group'] if 'group' in user else None
+            groups = user['groups'] if 'groups' in user else []
+            if group is None:
+                cmd = 'useradd ' + name
+            else:
+                cmd = 'useradd -G ' + group + ' ' + name
             print('Adding user:', cmd)
             subprocess.call(cmd.split())
 

@@ -21,41 +21,46 @@ def backupSection(settings, name, section):
     section_path = os.path.join(utils.tmpBackupDir(settings), 'sections', name)
     section_file_path = os.path.join(section_path, 'files')
     file_num = 0
-    # backup files
     print()
     print("Making backup for section", name)
-    files = section['backup_files']
-    for file in files:
-        file_backup_path = os.path.join(section_file_path, str(file_num))
-        backupFile(settings, file, file_backup_path)
-        file_num = file_num + 1
 
     # backup dirs
-    files = section['backup_dirs']
-    for file in files:
-        print(file)
-        file_backup_path = os.path.join(section_file_path, str(file_num))
-        print(file_backup_path)
-        backupFile(settings, file, file_backup_path)
-        file_num = file_num + 1
-
-    # backup dir include
-    files = section['backup_dirs_inc']
-    for file in files:
-        for dir, subdirs, fnames in os.walk(file):
-            # iterate content of all subdirs
-            # save dirs
+    if 'backup_dirs' in section:
+        files = section['backup_dirs']
+        for file in files:
+            print(file)
             file_backup_path = os.path.join(section_file_path, str(file_num))
-            backupFile(settings, dir, file_backup_path)
+            print(file_backup_path)
+            backupFile(settings, file, file_backup_path)
             file_num = file_num + 1
 
-            for fname in fnames:
-                # save all subfiles
-                incfile = os.path.join(dir, fname)
+    # backup dir include
+    if 'backup_dirs_inc' in section:
+        files = section['backup_dirs_inc']
+        for file in files:
+            for dir, subdirs, fnames in os.walk(file):
+                # iterate content of all subdirs
+                # save dirs
                 file_backup_path = os.path.join(section_file_path,
                                                 str(file_num))
-                backupFile(settings, incfile, file_backup_path)
+                backupFile(settings, dir, file_backup_path)
                 file_num = file_num + 1
+
+                for fname in fnames:
+                    # save all subfiles
+                    incfile = os.path.join(dir, fname)
+                    file_backup_path = os.path.join(section_file_path,
+                                                    str(file_num))
+                    backupFile(settings, incfile, file_backup_path)
+                    file_num = file_num + 1
+
+    # backup files
+    if 'backup_files' in section:
+        files = section['backup_files']
+        for file in files:
+            file_backup_path = os.path.join(section_file_path, str(file_num))
+            backupFile(settings, file, file_backup_path)
+            file_num = file_num + 1
 
     # save groups, users,
     backupMetaSection(settings, name, section, section_path)
