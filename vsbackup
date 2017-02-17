@@ -23,12 +23,15 @@ if __name__ == '__main__':
         backup.backupSections(settings, sections)
         backup.backupList(settings)
         buname = backup.genBackupName(settings)
-        print(buname)
         utils.compress(utils.tmpBackupDir(settings), buname)
+        print('BACKUP CREATED AT', buname)
+        print()
 
     if 'restorefile' in settings.keys():
         utils.untargz(settings['restorefile'], utils.tmpRestoreDir(settings))
         restore.restore(settings)
+        print('RESTORATION COMPLETE')
+        print()
 
     utils.permitTmp(settings, sections)
     utils.clearTmp(settings, sections)

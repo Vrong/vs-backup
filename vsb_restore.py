@@ -56,7 +56,7 @@ def runCmdEnd(settings, name, path):
         try:
             for cmd in conf['cmd_end']:
                 print('INFO:', 'Running command:', cmd)
-                subprocess.call(shlex.split(cmd))
+                os.system(cmd)
         except Exception:
             print('Error while running:', cmd)
 
@@ -70,7 +70,28 @@ def restoreMetaSection(settings, name, path):
         try:
             for cmd in conf['cmd_start']:
                 print('INFO:', 'Running command:', cmd)
-                subprocess.call(shlex.split(cmd))
+                os.system(cmd)
+        except Exception:
+            print('Error while running:', cmd)
+
+    # dependencies
+    if 'dependencies' in conf:
+        try:
+            cmd = settings['package_installer']
+            for pkg in conf['dependencies']:
+                cmd = cmd + ' ' + pkg
+            print('INFO:', 'Installing dependencies:', cmd)
+            subprocess.call(shlex.split(cmd))
+        except (KeyError, PermissionError):
+            print('Error while installing dependencies')
+            raise
+
+    # after dependencies installation
+    if 'cmd_after_dependencies' in conf:
+        try:
+            for cmd in conf['cmd_after_dependencies']:
+                print('INFO:', 'Running command:', cmd)
+                os.system(cmd)
         except Exception:
             print('Error while running:', cmd)
 
@@ -90,7 +111,7 @@ def restoreMetaSection(settings, name, path):
         try:
             for cmd in conf['cmd_after_packages']:
                 print('INFO:', 'Running command:', cmd)
-                subprocess.call(shlex.split(cmd))
+                os.system(cmd)
         except Exception:
             print('Error while running:', cmd)
 

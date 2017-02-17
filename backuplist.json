@@ -1,6 +1,7 @@
 {
   "nginx":
   {
+    "dependencies": ["curl"],
     "packages": ["nginx", "nginx-full"],
     "backup_files":
       [
@@ -21,6 +22,10 @@
     [
       "ls -a",
       "groups"
+    ],
+    "cmd_after_dependencies":
+    [
+      "cat /proc/cpuinfo | grep model"
     ],
     "cmd_after_packages":
     [

@@ -72,6 +72,8 @@ def backupMetaSection(settings, name, section, section_path):
     """Backup datas as users, groups and packages."""
     of = os.path.join(section_path, 'conf.json')
     info = dict()
+    if 'dependencies' in section:
+        info['dependencies'] = section['dependencies']
     if 'packages' in section:
         info['packages'] = section['packages']
     if 'groups' in section:
@@ -80,6 +82,8 @@ def backupMetaSection(settings, name, section, section_path):
         info['users'] = section['users']
     if 'cmd_start' in section:
         info['cmd_start'] = section['cmd_start']
+    if 'cmd_after_dependencies' in section:
+        info['cmd_after_dependencies'] = section['cmd_after_dependencies']
     if 'cmd_after_packages' in section:
         info['cmd_after_packages'] = section['cmd_after_packages']
     if 'cmd_end' in section:
