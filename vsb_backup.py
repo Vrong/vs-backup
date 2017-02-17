@@ -10,7 +10,7 @@ import vsb_utils as utils
 def backupSections(settings, sections):
     """Backup data based on sections and settings."""
     keys = list(sections)
-    print(len(keys), "section(s) to backup")
+    print('INFO:', len(keys), "section(s) to backup")
     for key in keys:
         backupSection(settings, key, sections[key])
         pass
@@ -25,15 +25,13 @@ def backupSection(settings, name, section):
         os.makedirs(section_file_path)
     file_num = 0
     print()
-    print("Making backup for section", name)
+    print('\t', "Making backup for section", name)
 
     # backup dirs
     if 'backup_dirs' in section:
         files = section['backup_dirs']
         for file in files:
-            print(file)
             file_backup_path = os.path.join(section_file_path, str(file_num))
-            print(file_backup_path)
             backupFile(settings, file, file_backup_path)
             file_num = file_num + 1
 
@@ -80,13 +78,20 @@ def backupMetaSection(settings, name, section, section_path):
         info['groups'] = section['groups']
     if 'users' in section:
         info['users'] = section['users']
+    if 'cmd_start' in section:
+        info['cmd_start'] = section['cmd_start']
+    if 'cmd_after_packages' in section:
+        info['cmd_after_packages'] = section['cmd_after_packages']
+    if 'cmd_end' in section:
+        info['cmd_end'] = section['cmd_end']
     with open(of, 'w') as outfile:
         json.dump(info, outfile)
 
 
 def backupFile(settings, filename, backup_path):
     """Create backup for one file."""
-    print("Backing up", filename, 'to', backup_path)
+    # print("Backing up", filename, 'to', backup_path)
+    print('INFO:', 'Backing up file', filename)
     if not os.path.exists(filename):
         print('No file', filename)
         return

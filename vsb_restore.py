@@ -5,12 +5,14 @@ import os
 import pwd
 import grp
 import subprocess
+import shlex
 
 
 def restoreFile(settings, file_dir):
     """Restore file as in info file."""
     info = utils.loadJsonFile(os.path.join(file_dir, 'info.json'))
     try:
+        print('INFO', 'Restoring file:', info['filename'])
         if os.path.isfile(info['filename']):
             os.remove(info['filename'])
         if not os.path.isdir(info['filename']):
@@ -30,7 +32,8 @@ def restoreFile(settings, file_dir):
 def restoreSection(settings, name, path):
     """Restore a given section."""
     print()
-    print('Restoring section', name)
+    print()
+    print('\t', 'RESTORING SECTION', name)
 
     # restore users,groups,packages
     restoreMetaSection(settings, name, path)
@@ -41,28 +44,63 @@ def restoreSection(settings, name, path):
     for num in file_nums:
         restoreFile(settings, os.path.join(files_path, num))
 
+    # run commands at the end of restoration
+    runCmdEnd(settings, name, path)
+
+
+def runCmdEnd(settings, name, path):
+    """Run end commands."""
+    conf = utils.loadJsonFile(os.path.join(path, 'conf.json'))
+    # before package installation cmd_start
+    if 'cmd_end' in conf:
+        try:
+            for cmd in conf['cmd_end']:
+                print('INFO:', 'Running command:', cmd)
+                subprocess.call(shlex.split(cmd))
+        except Exception:
+            print('Error while running:', cmd)
+
 
 def restoreMetaSection(settings, name, path):
     """Restore groups, users, packages."""
     conf = utils.loadJsonFile(os.path.join(path, 'conf.json'))
+
+    # before package installation cmd_start
+    if 'cmd_start' in conf:
+        try:
+            for cmd in conf['cmd_start']:
+                print('INFO:', 'Running command:', cmd)
+                subprocess.call(shlex.split(cmd))
+        except Exception:
+            print('Error while running:', cmd)
+
     # packages
     if 'packages' in conf:
         try:
             cmd = settings['package_installer']
             for pkg in conf['packages']:
                 cmd = cmd + ' ' + pkg
-            print('Installing packages:', cmd)
-            subprocess.call(cmd.split())
+            print('INFO:', 'Installing packages:', cmd)
+            subprocess.call(shlex.split(cmd))
         except (KeyError, PermissionError):
             print('Error while installing packages')
+
+    # running after packages commands
+    if 'cmd_after_packages' in conf:
+        try:
+            for cmd in conf['cmd_after_packages']:
+                print('INFO:', 'Running command:', cmd)
+                subprocess.call(shlex.split(cmd))
+        except Exception:
+            print('Error while running:', cmd)
 
     # groups
     if 'groups' in conf:
         for group in conf['groups']:
             try:
                 cmd = 'groupadd ' + group
-                print('Adding groups:', cmd)
-                subprocess.call(cmd.split())
+                print('INFO:', 'Adding groups:', cmd)
+                subprocess.call(shlex.split(cmd))
             except (KeyError, PermissionError):
                 print('Error adding group:', group)
 
@@ -77,13 +115,13 @@ def restoreMetaSection(settings, name, path):
                     cmd = 'useradd ' + name
                 else:
                     cmd = 'useradd -G ' + group + ' ' + name
-                print('Adding user:', cmd)
-                subprocess.call(cmd.split())
+                print('INFO:', 'Adding user:', cmd)
+                subprocess.call(shlex.split(cmd))
 
                 for gr in groups:
                     cmd = 'usermod -g ' + gr + ' ' + name
-                    print('Addings groups to user:', cmd)
-                    subprocess.call(cmd.split())
+                    print('INFO:', 'Addings groups to user:', cmd)
+                    subprocess.call(shlex.split(cmd))
             except (KeyError, PermissionError):
                 print('Error while adding user', user)
 

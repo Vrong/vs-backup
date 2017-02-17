@@ -16,7 +16,17 @@
     "users":
     [
       {"name":"unuser","group":"unusergroup","groups":["others", "groups2"]}
-    ]
+    ],
+    "cmd_start":
+    [
+      "ls -a",
+      "groups"
+    ],
+    "cmd_after_packages":
+    [
+      "systemctl stop nginx.service"
+    ],
+    "cmd_end":["ls"]
   },
 
 

@@ -31,3 +31,4 @@ if __name__ == '__main__':
         restore.restore(settings)
 
     utils.permitTmp(settings, sections)
+    utils.clearTmp(settings, sections)

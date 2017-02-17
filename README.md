@@ -76,7 +76,17 @@ Example:
     [
       {"name":"user1","group":"group1","groups":["group2", "groups3"]},
       {"name":"user2","group":"group2","groups":["wheel", "groups3"]}
-    ]
+    ],
+    "cmd_start":
+    [
+      "command to be excuted before restoration",
+      "cmd2"
+    ],
+    "cmd_after_packages":
+    [
+      "this command will be ran after packages installation"
+    ],
+    "cmd_end":["this command will run at the end of restoration"]
   },
 
   "nginx":
@@ -105,3 +115,6 @@ For each program you want to backup you can create a section_name as in this exa
 * **backup_dirs** These directories will be backed up, but not their content. They will just be created with same permissions at restore time.
 * **groups** These groups will be created in the system if they does not exist
 * **users** These users will be created with their primary and secondary groups
+* **cmd_start** Theses commands will be called before section restoration
+* **cmd_after_packages** These commands will be called after packages installation
+* **cmd_end** These commands will be called at the end of restoration
