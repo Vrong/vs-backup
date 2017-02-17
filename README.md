@@ -102,6 +102,6 @@ For each program you want to backup you can create a section_name as in this exa
 * **packages** These packages will be installed using the package installer set in settings.json
 * **backup_files** These files will be backed up
 * **backup_dirs_inc** These directories with their content will be backed up
-* **backup_dirs** These directories will be backed up, but not their content. They will just be created will same permissions at restore time.
+* **backup_dirs** These directories will be backed up, but not their content. They will just be created with same permissions at restore time.
 * **groups** These groups will be created in the system if they does not exist
 * **users** These users will be created with their primary and secondary groups
