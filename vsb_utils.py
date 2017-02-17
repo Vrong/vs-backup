@@ -19,6 +19,7 @@ def loadJsonFile(filename):
     except Exception as e:
         print(e)
         print('ERROR WHILE READING JSON FILE:', filename)
+        exit()
     return data
 
 
