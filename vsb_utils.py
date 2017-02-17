@@ -13,8 +13,12 @@ import glob
 def loadJsonFile(filename):
     """Load JSON file given."""
     data = None
-    with open(filename) as data_file:
-        data = json.load(data_file)
+    try:
+        with open(filename) as data_file:
+            data = json.load(data_file)
+    except Exception as e:
+        print(e)
+        print('ERROR WHILE READING JSON FILE:', filename)
     return data
 
 
