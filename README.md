@@ -11,19 +11,24 @@ Need **python3**
 
 To make a backup, use :
 `./vsbackup -b`
+
 By default, **./backuplist.json** file will be used.
+
 If you want to use another location for your json configuration, use `./vsbackup -b -l BACKUPLIST`
-By default, the backup will be created to **./backups/backup-timestamp-.tar.gz**, to save to another location use `./vsbackup -b -o OUTPUT`
+
+By default, the backup will be created to **./backups/backup-timestamp-.tar.gz**, to save it to another location use `./vsbackup -b -o OUTPUT`
 
 To restore a backup, locate the backup.tar.gz file you want to restore, and use :
 `./vsbackup -r BACKUPFILE`
 
 Note that **./settings.json** will be used as vsbackup configuration file.
+
 For more options, use `./vsbackup -h`
 
 ## settings.json
 
 This file is used to configure vsbackup.
+
 Example:
 ~~~json
 {
@@ -36,14 +41,15 @@ Example:
 }
 ~~~
 ### Help
-* package_installer: The command line to install packages on your system
-* tmp_dir: A temporary location that vsbackup can use
-* backupfile: Output backup file that will be created
-* backuplist: Backup description list that will be used (if none is specified)
-* timestamp: Append a timestamp to output backup file
-* backup: Make a backup when the program is launched, even if it's note specified in command line
+* **package_installer** The command line to install packages on your system
+* **tmp_dir** A temporary location that vsbackup can use
+* **backupfile** Output backup file that will be created
+* **backuplist** Backup description list that will be used (if none is specified)
+* **timestamp** Append a timestamp to output backup file
+* **backup** Make a backup when the program is launched, even if it's note specified in command line
 
 ## backuplist.json
+
 Example:
 ~~~json
 {
@@ -82,7 +88,6 @@ Example:
         "/etc/nginx/sites-available",
         "/etc/nginx/sites-enabled"
       ],
-    "backup_dirs":[],
     "groups":["www-data"],
     "users":
     [
@@ -94,9 +99,9 @@ Example:
 
 For each program you want to backup you can create a section_name as in this example. Though the section_name can whatever you want it to be.
 
-* packages: These packages will be installed using the package installer set in settings.json
-* backup_files: These files will be backed up
-* backup_dirs_inc: These directories with their content will be backed up
-* backup_dirs: These directories will be backed up, but not their content. They will just be created will same permissions at restore time.
-* groups: These groups will be created in the system if they does not exist
-* users: These users will be created with their primary and secondary groups
+* **packages** These packages will be installed using the package installer set in settings.json
+* **backup_files** These files will be backed up
+* **backup_dirs_inc** These directories with their content will be backed up
+* **backup_dirs** These directories will be backed up, but not their content. They will just be created will same permissions at restore time.
+* **groups** These groups will be created in the system if they does not exist
+* **users** These users will be created with their primary and secondary groups
