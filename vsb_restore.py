@@ -29,11 +29,13 @@ def restoreFile(settings, file_dir):
 
 def restoreSection(settings, name, path):
     """Restore a given section."""
+    print()
+    print('Restoring section', name)
+
     # restore users,groups,packages
     restoreMetaSection(settings, name, path)
 
     # restore files
-    print('Restoring section', name)
     files_path = os.path.join(path, 'files')
     file_nums = os.listdir(files_path)
     for num in file_nums:

@@ -3,6 +3,10 @@
 
 **vsbackup** is a tool used to create and restore backups on GNU/Linux systems. Backup directives are written in **backuplist.json** file.
 
+## Prerequisites
+
+Need **python3**
+
 ## Usage examples
 
 To make a backup, use :
