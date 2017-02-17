@@ -73,8 +73,7 @@ def compress(src, dst):
         os.makedirs(directory)
     tar = tarfile.open(dst, "w:gz")
     for file_name in glob.glob(os.path.join(src, "*")):
-        print("  Adding %s..." % file_name)
-        print(os.path.basename(file_name))
+        print("  Adding %s to archive..." % file_name)
         tar.add(file_name, os.path.basename(file_name))
     tar.close()
     pass
