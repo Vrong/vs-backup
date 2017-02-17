@@ -62,7 +62,7 @@ Example:
         "/etc/somesoftware/software.conf",
         "/usr/somesoftware/database.db"
       ],
-    "backup_dirs_inc":
+    "backup_inc":
       [
         "/etc/somesoftware/conf.d",
         "/etc/somesoftware/directorycontenttobackup"
@@ -72,17 +72,21 @@ Example:
         "/etc/somesoftware/directorytocreate",
         "/etc/somesoftware/contentwontbebackedup"
       ],
+    "backup_dirs_tree":
+      [
+        "/var/backupfoldertree/butnofiles"
+      ],
     "groups":["group1", "group2", "group3"],
     "users":
-    [
-      {"name":"user1","group":"group1","groups":["group2", "groups3"]},
-      {"name":"user2","group":"group2","groups":["wheel", "groups3"]}
-    ],
+      [
+        {"name":"user1","group":"group1","groups":["group2", "groups3"]},
+        {"name":"user2","group":"group2","groups":["wheel", "groups3"]}
+      ],
     "cmd_start":
-    [
-      "command to be excuted before restoration",
-      "cmd2"
-    ],
+      [
+        "command to be excuted before restoration",
+        "cmd2"
+      ],
     "cmd_after_dependencies":["command to run after dependencies installation"],
     "cmd_after_packages":["this command will be ran after packages installation"],
     "cmd_end":["this command will run at the end of restoration"]
@@ -95,16 +99,16 @@ Example:
     "packages": ["nginx"],
     "cmd_after_packages":["systemctl stop nginx"],
     "backup_files":["/etc/nginx/nginx.conf"],
-    "backup_dirs_inc":
+    "backup_inc":
       [
         "/etc/nginx/sites-available",
         "/etc/nginx/sites-enabled"
       ],
     "groups":["www-data"],
     "users":
-    [
-      {"name":"www-data","group":"www-data","groups":[]}
-    ],
+      [
+        {"name":"www-data","group":"www-data","groups":[]}
+      ],
     "cmd_end":["systemctl start nginx"],
   }
 }
@@ -115,8 +119,9 @@ For each program you want to backup you can create a section_name as in this exa
 * **dependencies** These packages will be installed before **packages**, using the package installer set in settings.json
 * **packages** These packages will be installed using the package installer set in **settings.json**
 * **backup_files** These files will be backed up
-* **backup_dirs_inc** These directories with their content will be backed up
+* **backup_inc** These directories with their content will be backed up
 * **backup_dirs** These directories will be backed up, but not their content. They will just be created with same permissions at restore time.
+* **backup_dirs_tree** This directory will be backed up recursively, but files will not be included. Only folder tree.
 * **groups** These groups will be created in the system if they does not exist
 * **users** These users will be created with their primary and secondary groups
 * **cmd_start** Theses commands will be called before section restoration

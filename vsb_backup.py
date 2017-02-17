@@ -35,9 +35,21 @@ def backupSection(settings, name, section):
             backupFile(settings, file, file_backup_path)
             file_num = file_num + 1
 
+    # backup dir tree (no file)
+    if 'backup_dirs_tree' in section:
+        files = section['backup_dirs_tree']
+        for file in files:
+            for dir, subdirs, fnames in os.walk(file):
+                # iterate content of all subdirs
+                # save dirs
+                file_backup_path = os.path.join(section_file_path,
+                                                str(file_num))
+                backupFile(settings, dir, file_backup_path)
+                file_num = file_num + 1
+
     # backup dir include
-    if 'backup_dirs_inc' in section:
-        files = section['backup_dirs_inc']
+    if 'backup_inc' in section:
+        files = section['backup_inc']
         for file in files:
             for dir, subdirs, fnames in os.walk(file):
                 # iterate content of all subdirs

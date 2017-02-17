@@ -7,30 +7,34 @@
       [
         "/etc/nginx/nginx.conf"
       ],
-    "backup_dirs_inc":
+    "backup_inc":
       [
         "/etc/nginx/sites-available",
         "/etc/nginx/sites-enabled"
       ],
     "backup_dirs":[],
+    "backup_dirs_tree":
+      [
+        "/var/www"
+      ],
     "groups":["vrong", "others", "unusergroup", "groups2"],
     "users":
-    [
-      {"name":"unuser","group":"unusergroup","groups":["others", "groups2"]}
-    ],
+      [
+        {"name":"unuser","group":"unusergroup","groups":["others", "groups2"]}
+      ],
     "cmd_start":
-    [
-      "ls -a",
-      "groups"
-    ],
+      [
+        "ls -a",
+        "groups"
+      ],
     "cmd_after_dependencies":
-    [
-      "cat /proc/cpuinfo | grep model"
-    ],
+      [
+        "cat /proc/cpuinfo | grep model"
+      ],
     "cmd_after_packages":
-    [
-      "systemctl stop nginx.service"
-    ],
+      [
+        "systemctl stop nginx.service"
+      ],
     "cmd_end":["ls"]
   },
 
