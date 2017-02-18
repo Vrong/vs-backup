@@ -24,9 +24,10 @@ def restoreFile(settings, file_dir):
         gid = grp.getgrnam(info['group']).gr_gid
         os.chown(info['filename'], uid, gid)
 
-    except (KeyError, PermissionError):
+    except Exception as e:
         print('ERROR: Cannot restore ',
-              info['filename'], ': insufficient permission')
+              info['filename'])
+        print(e)
 
 
 def restoreSection(settings, name, path):
