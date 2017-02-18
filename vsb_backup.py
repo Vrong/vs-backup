@@ -43,7 +43,7 @@ def backupSection(settings, name, section):
                 # iterate content of all subdirs
                 # save dirs
                 file_backup_path = os.path.join(section_file_path,
-                                                str(file_num))
+                                                str(file_num).zfill(20))
                 backupFile(settings, dir, file_backup_path)
                 file_num = file_num + 1
 
@@ -63,7 +63,7 @@ def backupSection(settings, name, section):
                     # save all subfiles
                     incfile = os.path.join(dir, fname)
                     file_backup_path = os.path.join(section_file_path,
-                                                    str(file_num))
+                                                    str(file_num).zfill(20))
                     backupFile(settings, incfile, file_backup_path)
                     file_num = file_num + 1
 
@@ -71,7 +71,8 @@ def backupSection(settings, name, section):
     if 'backup_files' in section:
         files = section['backup_files']
         for file in files:
-            file_backup_path = os.path.join(section_file_path, str(file_num))
+            file_backup_path = os.path.join(section_file_path,
+                                            str(file_num).zfill(20))
             backupFile(settings, file, file_backup_path)
             file_num = file_num + 1
 
