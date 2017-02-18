@@ -55,7 +55,7 @@ def backupSection(settings, name, section):
                 # iterate content of all subdirs
                 # save dirs
                 file_backup_path = os.path.join(section_file_path,
-                                                str(file_num))
+                                                str(file_num).zfill(20))
                 backupFile(settings, dir, file_backup_path)
                 file_num = file_num + 1
 
