@@ -41,6 +41,7 @@ def restoreSection(settings, name, path):
     # restore files
     files_path = os.path.join(path, 'files')
     file_nums = os.listdir(files_path)
+    file_nums.sort()
     for num in file_nums:
         restoreFile(settings, os.path.join(files_path, num))
 
