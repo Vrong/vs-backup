@@ -26,7 +26,7 @@ def restoreFile(settings, file_dir):
 
     except Exception as e:
         print('ERROR: Cannot restore ',
-              info['filename'])
+              info['filename'], 'from', os.path.join(file_dir, 'file'))
         print(e)
 
 

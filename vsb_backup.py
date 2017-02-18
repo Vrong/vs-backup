@@ -31,7 +31,8 @@ def backupSection(settings, name, section):
     if 'backup_dirs' in section:
         files = section['backup_dirs']
         for file in files:
-            file_backup_path = os.path.join(section_file_path, str(file_num))
+            file_backup_path = os.path.join(section_file_path,
+                                            str(file_num).zfill(20))
             backupFile(settings, file, file_backup_path)
             file_num = file_num + 1
 
